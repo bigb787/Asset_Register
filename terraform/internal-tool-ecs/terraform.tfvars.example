@@ -1,0 +1,28 @@
+aws_region  = "us-east-1"
+aws_profile = "my-asset-project"
+
+project_name = "asset-register-tool"
+vpc_cidr     = "10.40.0.0/16"
+
+# Replace with *your* current public IP in CIDR form:
+allowed_ingress_cidr = "203.0.113.10/32"
+
+# Pick one
+app_choice = "appsmith"
+
+# Optional override. Leave empty to use defaults based on app_choice:
+# - appsmith -> appsmith/appsmith-ce:latest
+# - budibase -> budibase/budibase:latest
+container_image = ""
+
+# Most installs expose HTTP on 80; adjust if your image uses a different port.
+container_port = 80
+healthcheck_path = "/"
+
+# RDS
+db_instance_class        = "db.t4g.micro"
+db_allocated_storage_gb = 20
+postgres_engine_version = "16.3"
+db_name                 = "appdb"
+db_username             = "appadmin"
+
