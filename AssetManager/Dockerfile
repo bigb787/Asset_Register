@@ -5,6 +5,7 @@ COPY AssetManager/AssetManager.csproj AssetManager/
 RUN dotnet restore AssetManager/AssetManager.csproj
 COPY AssetManager/ AssetManager/
 WORKDIR /src/AssetManager
+RUN dotnet restore
 RUN dotnet publish -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
