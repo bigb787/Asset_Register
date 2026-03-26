@@ -42,6 +42,7 @@
         <div class="actions">
             <button type="submit">Save</button>
             <button type="button" id="cancel-edit" class="secondary">Cancel Edit</button>
+            <button type="button" id="delete-selected" class="danger">Delete Selected</button>
             <a class="link-btn" href="/api/reports/export/laptops.xlsx" target="_blank">Export Excel</a>
         </div>
     </form>
@@ -60,12 +61,11 @@
         <table id="assets-table">
             <thead>
             <tr>
-                <th>Id</th><th>Asset Type</th><th>Asset Manufacturer</th><th>Processor</th><th>Asset Owner</th>
-                <th>Location</th><th>Model</th><th>Service Tag</th><th>P/N</th><th>Last Owner</th>
-                <th>Warranty</th><th>Asset Health</th><th>Install date</th><th>O/S</th><th>Supt Vendor</th>
-                <th>Dept</th><th>HardDisk</th><th>RAM</th><th>Keyboard</th><th>Mouse</th>
-                <th>HeadPhone</th><th>USB Extender</th><th>Contains PII</th><th>Date Added/Updated</th>
-                <th>Free?</th><th>Actions</th>
+                <th>Asset Type</th><th>Asset Manufacturer</th><th>Processor</th><th>Asset Owner</th><th>Location</th>
+                <th>Model</th><th>Service Tag</th><th>P/N</th><th>Last Owner</th><th>Warranty</th>
+                <th>Asset Health</th><th>Install date</th><th>O/S</th><th>Supt Vendor</th><th>Dept</th>
+                <th>HardDisk</th><th>RAM</th><th>Keyboard</th><th>Mouse</th><th>HeadPhone</th>
+                <th>USB Extender</th><th>Contains PII (Yes/No)</th><th>Date Added/Updated</th><th>Free?</th><th>Actions</th>
             </tr>
             </thead>
             <tbody></tbody>
@@ -167,14 +167,14 @@
     function renderRows(rows) {
         tbody.innerHTML = "";
         if (!rows.length) {
-            tbody.innerHTML = "<tr><td colspan='26'>No assets found.</td></tr>";
+            tbody.innerHTML = "<tr><td colspan='25'>No assets found.</td></tr>";
             return;
         }
         for (const row of rows) {
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td>${cell(row.id)}</td><td>${cell(row.assetType)}</td><td>${cell(row.assetManufacturer)}</td><td>${cell(row.processor)}</td><td>${cell(row.assetOwner)}</td>
-                <td>${cell(row.location)}</td><td>${cell(row.model)}</td><td>${cell(row.serviceTag)}</td><td>${cell(row.pn)}</td><td>${cell(row.lastOwner)}</td>
+                <td>${cell(row.assetType)}</td><td>${cell(row.assetManufacturer)}</td><td>${cell(row.processor)}</td><td>${cell(row.assetOwner)}</td><td>${cell(row.location)}</td>
+                <td>${cell(row.model)}</td><td>${cell(row.serviceTag)}</td><td>${cell(row.pn)}</td><td>${cell(row.lastOwner)}</td>
                 <td>${cell(row.warranty)}</td><td>${cell(row.assetHealth)}</td><td>${d(row.installDate)}</td><td>${cell(row.os)}</td><td>${cell(row.suptVendor)}</td>
                 <td>${cell(row.dept)}</td><td>${cell(row.hardDisk)}</td><td>${cell(row.ram)}</td><td>${cell(row.keyboard)}</td><td>${cell(row.mouse)}</td>
                 <td>${cell(row.headPhone)}</td><td>${cell(row.usbExtender)}</td><td>${cell(row.containsPII)}</td><td>${dt(row.dateAddedUpdated)}</td>
@@ -182,6 +182,7 @@
                 <td><button data-action="edit">Edit</button> <button data-action="delete" class="danger">Delete</button></td>
             `;
             tr.dataset.row = JSON.stringify(row);
+            tr.className = "selectable-row";
             tbody.appendChild(tr);
         }
     }
@@ -219,51 +220,64 @@
         clearForm();
         setStatus("Edit cancelled.");
     });
+    document.getElementById("delete-selected").addEventListener("click", async () => {
+        const id = controls.id.value;
+        if (!id) {
+            setStatus("Select a row first to delete.", true);
+            return;
+        }
+        if (!confirm(`Delete asset #${id}?`)) return;
+        const res = await fetch(`/api/laptops/${id}`, { method: "DELETE" });
+        if (!res.ok) {
+            setStatus("Delete failed.", true);
+            return;
+        }
+        clearForm();
+        await reload();
+        setStatus("Asset deleted.");
+    });
     document.getElementById("reload-btn").addEventListener("click", reload);
     showFreeOnly.addEventListener("change", reload);
 
     tbody.addEventListener("click", async (e) => {
-        const btn = e.target.closest("button");
-        if (!btn) return;
-        const tr = btn.closest("tr");
+        const tr = e.target.closest("tr");
+        if (!tr || !tr.dataset.row) return;
         const row = JSON.parse(tr.dataset.row);
-        const action = btn.dataset.action;
-        if (action === "edit") {
-            controls.id.value = row.id ?? "";
-            controls.serviceTag.value = row.serviceTag ?? "";
-            controls.assetType.value = row.assetType ?? "";
-            controls.assetManufacturer.value = row.assetManufacturer ?? "";
-            controls.processor.value = row.processor ?? "";
-            controls.assetOwner.value = row.assetOwner ?? "";
-            controls.location.value = row.location ?? "";
-            controls.model.value = row.model ?? "";
-            controls.pn.value = row.pn ?? "";
-            controls.lastOwner.value = row.lastOwner ?? "";
-            controls.warranty.value = row.warranty ?? "";
-            controls.assetHealth.value = row.assetHealth ?? "";
-            controls.installDate.value = row.installDate ? String(row.installDate).slice(0, 10) : "";
-            controls.os.value = row.os ?? "";
-            controls.suptVendor.value = row.suptVendor ?? "";
-            controls.dept.value = row.dept ?? "";
-            controls.hardDisk.value = row.hardDisk ?? "";
-            controls.ram.value = row.ram ?? "";
-            controls.keyboard.value = row.keyboard ?? "";
-            controls.mouse.value = row.mouse ?? "";
-            controls.headPhone.value = row.headPhone ?? "";
-            controls.usbExtender.value = row.usbExtender ?? "";
-            controls.containsPII.value = row.containsPII ?? "";
-            controls.isAvailable.checked = !!row.isAvailable;
-            formTitle.textContent = `Edit Asset #${row.id}`;
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            return;
-        }
+        const action = e.target.getAttribute("data-action");
         if (action === "delete") {
             if (!confirm(`Delete asset ${row.serviceTag || row.id}?`)) return;
             const res = await fetch(`/api/laptops/${row.id}`, { method: "DELETE" });
             if (!res.ok) return setStatus("Delete failed.", true);
             await reload();
             setStatus("Asset deleted.");
+            return;
         }
+        controls.id.value = row.id ?? "";
+        controls.serviceTag.value = row.serviceTag ?? "";
+        controls.assetType.value = row.assetType ?? "";
+        controls.assetManufacturer.value = row.assetManufacturer ?? "";
+        controls.processor.value = row.processor ?? "";
+        controls.assetOwner.value = row.assetOwner ?? "";
+        controls.location.value = row.location ?? "";
+        controls.model.value = row.model ?? "";
+        controls.pn.value = row.pn ?? "";
+        controls.lastOwner.value = row.lastOwner ?? "";
+        controls.warranty.value = row.warranty ?? "";
+        controls.assetHealth.value = row.assetHealth ?? "";
+        controls.installDate.value = row.installDate ? String(row.installDate).slice(0, 10) : "";
+        controls.os.value = row.os ?? "";
+        controls.suptVendor.value = row.suptVendor ?? "";
+        controls.dept.value = row.dept ?? "";
+        controls.hardDisk.value = row.hardDisk ?? "";
+        controls.ram.value = row.ram ?? "";
+        controls.keyboard.value = row.keyboard ?? "";
+        controls.mouse.value = row.mouse ?? "";
+        controls.headPhone.value = row.headPhone ?? "";
+        controls.usbExtender.value = row.usbExtender ?? "";
+        controls.containsPII.value = row.containsPII ?? "";
+        controls.isAvailable.checked = !!row.isAvailable;
+        formTitle.textContent = `Edit Asset #${row.id}`;
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
     clearForm();
