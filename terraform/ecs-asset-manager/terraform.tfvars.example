@@ -1,0 +1,13 @@
+aws_region  = "us-east-1"
+aws_profile = "my-asset-project"
+
+# postgresql (default) or sqlserver (RDS SQL Server Express)
+# database_engine = "sqlserver"
+
+# After first apply, add your GitHub coordinates and re-apply to create the deploy role:
+# enable_github_oidc = true
+# github_org          = "your-github-user-or-org"
+# github_repo         = "Asset_Management_Register"
+# github_branch       = "main"
+
+ecs_desired_count = 0

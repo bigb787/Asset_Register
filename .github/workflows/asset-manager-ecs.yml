@@ -1,0 +1,55 @@
+# Deploy ASP.NET Asset Manager to AWS ECS (Fargate).
+# Prerequisites:
+# 1) terraform apply in terraform/ecs-asset-manager
+# 2) GitHub repository → Settings → Secrets and variables → Actions:
+#    - AWS_ROLE_TO_ASSUME  = output github_actions_role_arn (after enable_github_oidc)
+#    - ECR_REPOSITORY_URL = output ecr_repository_url (no :tag)
+# 3) Repository → Settings → Variables:
+#    - ECS_CLUSTER_NAME = output ecs_cluster_name
+#    - ECS_SERVICE_NAME = output ecs_service_name
+name: Deploy Asset Manager (ECS)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "AssetManager/**"
+      - ".github/workflows/asset-manager-ecs.yml"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push image
+        env:
+          IMAGE: ${{ secrets.ECR_REPOSITORY_URL }}:latest
+        run: |
+          docker build -f AssetManager/Dockerfile -t "$IMAGE" .
+          docker push "$IMAGE"
+
+      - name: Force new ECS deployment
+        env:
+          CLUSTER: ${{ vars.ECS_CLUSTER_NAME }}
+          SERVICE: ${{ vars.ECS_SERVICE_NAME }}
+        run: |
+          aws ecs update-service --cluster "$CLUSTER" --service "$SERVICE" --force-new-deployment

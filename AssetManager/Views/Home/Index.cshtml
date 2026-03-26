@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Home";
+}
+<h1>Asset Manager</h1>
+<p>Use the HTTP API:</p>
+<ul>
+    <li><code>GET /api/laptops</code> — list assigned laptops</li>
+    <li><code>GET /api/laptops/free</code> — list available (unassigned) laptops</li>
+    <li><code>POST /api/laptops</code> — create</li>
+    <li><code>PUT /api/laptops/{id}</code> — update (set <code>IsAvailable</code> for free/pool)</li>
+    <li><code>DELETE /api/laptops/{id}</code> — delete</li>
+    <li><code>/api/free-assets</code> — CRUD spare stock</li>
+    <li><code>GET /api/reports/export/laptops.xlsx</code> — Excel export (S3 presigned when configured)</li>
+</ul>
