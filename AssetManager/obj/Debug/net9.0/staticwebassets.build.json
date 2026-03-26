@@ -1,0 +1,362 @@
+{
+  "Version": 1,
+  "Hash": "r97EO7WQhNyxQeV3ttvGGuhujCBil24fOYgq7r+Mu4E=",
+  "Source": "AssetManager",
+  "BasePath": "_content/AssetManager",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "AssetManager\\wwwroot",
+      "Source": "AssetManager",
+      "ContentRoot": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\",
+      "BasePath": "_content/AssetManager",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-o6r7s48k7i.gz",
+      "SourceId": "AssetManager",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/AssetManager",
+      "RelativePath": "css/site#[.{fingerprint=o6r7s48k7i}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\css\\site.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "1pvvorg6l1",
+      "Integrity": "y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\css\\site.css",
+      "SourceId": "AssetManager",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\",
+      "BasePath": "_content/AssetManager",
+      "RelativePath": "css/site#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "o6r7s48k7i",
+      "Integrity": "YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\site.css"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "css/site.css",
+      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-o6r7s48k7i.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001712328767"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "583"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Mar 2026 11:35:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.css",
+      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\css\\site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1252"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Mar 2026 11:35:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.css.gz",
+      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-o6r7s48k7i.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "583"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Mar 2026 11:35:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.o6r7s48k7i.css",
+      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-o6r7s48k7i.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001712328767"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "583"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Mar 2026 11:35:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "o6r7s48k7i"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.o6r7s48k7i.css",
+      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\css\\site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1252"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Mar 2026 11:35:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "o6r7s48k7i"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.o6r7s48k7i.css.gz",
+      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-o6r7s48k7i.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "583"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Mar 2026 11:35:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "o6r7s48k7i"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU="
+        }
+      ]
+    }
+  ]
+}

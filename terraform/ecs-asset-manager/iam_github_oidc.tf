@@ -1,20 +1,3 @@
-data "tls_certificate" "github" {
-  count = var.enable_github_oidc ? 1 : 0
-  url   = "https://token.actions.githubusercontent.com"
-}
-
-resource "aws_iam_openid_connect_provider" "github" {
-  count = var.enable_github_oidc && local.github_subject_filter != "" ? 1 : 0
-
-  url = "https://token.actions.githubusercontent.com"
-
-  client_id_list = [
-    "sts.amazonaws.com",
-  ]
-
-  thumbprint_list = [data.tls_certificate.github[0].certificates[0].sha1_fingerprint]
-}
-
 data "aws_iam_policy_document" "github_actions_trust" {
   count = var.enable_github_oidc && local.github_subject_filter != "" ? 1 : 0
 
@@ -23,7 +6,7 @@ data "aws_iam_policy_document" "github_actions_trust" {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     principals {
       type        = "Federated"
-      identifiers = [aws_iam_openid_connect_provider.github[0].arn]
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"]
     }
     condition {
       test     = "StringEquals"

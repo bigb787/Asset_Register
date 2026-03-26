@@ -51,7 +51,7 @@ variable "enable_github_oidc" {
 variable "ecs_desired_count" {
   type        = number
   description = "Use 0 until the first image exists in ECR; then set to 1 (or scale as needed)."
-  default     = 0
+  default     = 1
 }
 
 variable "database_engine" {

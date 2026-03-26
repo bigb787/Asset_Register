@@ -42,14 +42,34 @@ jobs:
 
       - name: Build and push image
         env:
-          IMAGE: ${{ secrets.ECR_REPOSITORY_URL }}:latest
+          ECR_REPOSITORY_URL: ${{ secrets.ECR_REPOSITORY_URL }}
+          IMAGE_SHA: ${{ secrets.ECR_REPOSITORY_URL }}:${{ github.sha }}
+          IMAGE_LATEST: ${{ secrets.ECR_REPOSITORY_URL }}:latest
         run: |
-          docker build -f AssetManager/Dockerfile -t "$IMAGE" .
-          docker push "$IMAGE"
+          docker build -f AssetManager/Dockerfile -t "$IMAGE_SHA" -t "$IMAGE_LATEST" .
+          docker push "$IMAGE_SHA"
+          docker push "$IMAGE_LATEST"
+          echo "IMAGE_SHA=$IMAGE_SHA" >> "$GITHUB_ENV"
 
-      - name: Force new ECS deployment
+      - name: Register new task definition revision (immutable image)
         env:
           CLUSTER: ${{ vars.ECS_CLUSTER_NAME }}
           SERVICE: ${{ vars.ECS_SERVICE_NAME }}
+          IMAGE_SHA: ${{ env.IMAGE_SHA }}
         run: |
-          aws ecs update-service --cluster "$CLUSTER" --service "$SERVICE" --force-new-deployment
+          TASK_DEF_ARN=$(aws ecs describe-services --cluster "$CLUSTER" --services "$SERVICE" --query "services[0].taskDefinition" --output text)
+          aws ecs describe-task-definition --task-definition "$TASK_DEF_ARN" --query "taskDefinition" > taskdef.json
+          jq --arg IMAGE "$IMAGE_SHA" '
+            .containerDefinitions[0].image = $IMAGE
+            | del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)
+          ' taskdef.json > taskdef.new.json
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://taskdef.new.json --query "taskDefinition.taskDefinitionArn" --output text)
+          echo "NEW_TASK_DEF_ARN=$NEW_TASK_DEF_ARN" >> "$GITHUB_ENV"
+
+      - name: Deploy new task definition
+        env:
+          CLUSTER: ${{ vars.ECS_CLUSTER_NAME }}
+          SERVICE: ${{ vars.ECS_SERVICE_NAME }}
+          NEW_TASK_DEF_ARN: ${{ env.NEW_TASK_DEF_ARN }}
+        run: |
+          aws ecs update-service --cluster "$CLUSTER" --service "$SERVICE" --task-definition "$NEW_TASK_DEF_ARN"

@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.AssetManager.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.AssetManager.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.AssetManager.props",
+      "PackagePath": "build\\AssetManager.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.AssetManager.props",
+      "PackagePath": "buildMultiTargeting\\AssetManager.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.AssetManager.props",
+      "PackagePath": "buildTransitive\\AssetManager.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
