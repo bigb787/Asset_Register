@@ -28,24 +28,56 @@ public class ReportsApiController(
             using (var package = new ExcelPackage())
             {
                 var sheet = package.Workbook.Worksheets.Add("Laptops");
-                sheet.Cells[1, 1].Value = nameof(Models.Laptop.ServiceTag);
-                sheet.Cells[1, 2].Value = nameof(Models.Laptop.AssetType);
-                sheet.Cells[1, 3].Value = nameof(Models.Laptop.Model);
-                sheet.Cells[1, 4].Value = nameof(Models.Laptop.AssetOwner);
-                sheet.Cells[1, 5].Value = nameof(Models.Laptop.Location);
-                sheet.Cells[1, 6].Value = nameof(Models.Laptop.IsAvailable);
-                sheet.Cells[1, 7].Value = nameof(Models.Laptop.DateAddedUpdated);
+                sheet.Cells[1, 1].Value = "Asset Type";
+                sheet.Cells[1, 2].Value = "Asset Manufacturer";
+                sheet.Cells[1, 3].Value = "Processor";
+                sheet.Cells[1, 4].Value = "Asset Owner";
+                sheet.Cells[1, 5].Value = "Location";
+                sheet.Cells[1, 6].Value = "Model";
+                sheet.Cells[1, 7].Value = "Service Tag";
+                sheet.Cells[1, 8].Value = "P/N";
+                sheet.Cells[1, 9].Value = "Last Owner";
+                sheet.Cells[1, 10].Value = "Warranty";
+                sheet.Cells[1, 11].Value = "Asset Health";
+                sheet.Cells[1, 12].Value = "Install date";
+                sheet.Cells[1, 13].Value = "O/S";
+                sheet.Cells[1, 14].Value = "Supt Vendor";
+                sheet.Cells[1, 15].Value = "Dept";
+                sheet.Cells[1, 16].Value = "HardDisk";
+                sheet.Cells[1, 17].Value = "RAM";
+                sheet.Cells[1, 18].Value = "Keyboard";
+                sheet.Cells[1, 19].Value = "Mouse";
+                sheet.Cells[1, 20].Value = "HeadPhone";
+                sheet.Cells[1, 21].Value = "USB Extender";
+                sheet.Cells[1, 22].Value = "Contains PII (Yes/No)";
+                sheet.Cells[1, 23].Value = "Date Added/Updated";
 
                 var r = 2;
                 foreach (var x in rows)
                 {
-                    sheet.Cells[r, 1].Value = x.ServiceTag;
-                    sheet.Cells[r, 2].Value = x.AssetType;
-                    sheet.Cells[r, 3].Value = x.Model;
+                    sheet.Cells[r, 1].Value = x.AssetType;
+                    sheet.Cells[r, 2].Value = x.AssetManufacturer;
+                    sheet.Cells[r, 3].Value = x.Processor;
                     sheet.Cells[r, 4].Value = x.AssetOwner;
                     sheet.Cells[r, 5].Value = x.Location;
-                    sheet.Cells[r, 6].Value = x.IsAvailable;
-                    sheet.Cells[r, 7].Value = x.DateAddedUpdated;
+                    sheet.Cells[r, 6].Value = x.Model;
+                    sheet.Cells[r, 7].Value = x.ServiceTag;
+                    sheet.Cells[r, 8].Value = x.PN;
+                    sheet.Cells[r, 9].Value = x.LastOwner;
+                    sheet.Cells[r, 10].Value = x.Warranty;
+                    sheet.Cells[r, 11].Value = x.AssetHealth;
+                    sheet.Cells[r, 12].Value = x.InstallDate;
+                    sheet.Cells[r, 13].Value = x.OS;
+                    sheet.Cells[r, 14].Value = x.SuptVendor;
+                    sheet.Cells[r, 15].Value = x.Dept;
+                    sheet.Cells[r, 16].Value = x.HardDisk;
+                    sheet.Cells[r, 17].Value = x.RAM;
+                    sheet.Cells[r, 18].Value = x.Keyboard;
+                    sheet.Cells[r, 19].Value = x.Mouse;
+                    sheet.Cells[r, 20].Value = x.HeadPhone;
+                    sheet.Cells[r, 21].Value = x.USBExtender;
+                    sheet.Cells[r, 22].Value = x.ContainsPII;
+                    sheet.Cells[r, 23].Value = x.DateAddedUpdated;
                     r++;
                 }
 

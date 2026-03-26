@@ -2,41 +2,42 @@
     ViewData["Title"] = "Home";
 }
 <h1>Asset Manager</h1>
-<p>Simple UI for create / update / delete laptops.</p>
+<p>Simple UI for create / update / delete laptops with your full header set.</p>
 
 <section class="card">
     <h2 id="form-title">Create Asset</h2>
     <form id="asset-form">
         <input type="hidden" id="asset-id" />
         <div class="grid">
-            <label>
-                Service Tag
-                <input id="serviceTag" required />
+            <label>Service Tag<input id="serviceTag" required /></label>
+            <label>Asset Type<input id="assetType" value="Laptop" /></label>
+            <label>Asset Manufacturer<input id="assetManufacturer" /></label>
+            <label>Processor<input id="processor" /></label>
+            <label>Asset Owner<input id="assetOwner" /></label>
+            <label>Location<input id="location" /></label>
+            <label>Model<input id="model" /></label>
+            <label>P/N<input id="pn" /></label>
+            <label>Last Owner<input id="lastOwner" /></label>
+            <label>Warranty<input id="warranty" /></label>
+            <label>Asset Health<input id="assetHealth" /></label>
+            <label>Install Date<input id="installDate" type="date" /></label>
+            <label>O/S<input id="os" /></label>
+            <label>Supt Vendor<input id="suptVendor" /></label>
+            <label>Dept<input id="dept" /></label>
+            <label>HardDisk<input id="hardDisk" /></label>
+            <label>RAM<input id="ram" /></label>
+            <label>Keyboard<input id="keyboard" /></label>
+            <label>Mouse<input id="mouse" /></label>
+            <label>HeadPhone<input id="headPhone" /></label>
+            <label>USB Extender<input id="usbExtender" /></label>
+            <label>Contains PII (Yes/No)
+                <select id="containsPII">
+                    <option value="">--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
             </label>
-            <label>
-                Asset Type
-                <input id="assetType" value="Laptop" />
-            </label>
-            <label>
-                Manufacturer
-                <input id="assetManufacturer" />
-            </label>
-            <label>
-                Model
-                <input id="model" />
-            </label>
-            <label>
-                Owner
-                <input id="assetOwner" />
-            </label>
-            <label>
-                Location
-                <input id="location" />
-            </label>
-            <label>
-                Is Available
-                <input id="isAvailable" type="checkbox" checked />
-            </label>
+            <label class="inline">Is Available <input id="isAvailable" type="checkbox" checked /></label>
         </div>
         <div class="actions">
             <button type="submit">Save</button>
@@ -55,27 +56,26 @@
         </label>
         <button type="button" id="reload-btn">Reload</button>
     </div>
-    <table id="assets-table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Service Tag</th>
-            <th>Type</th>
-            <th>Model</th>
-            <th>Owner</th>
-            <th>Location</th>
-            <th>Free?</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <div class="table-wrap">
+        <table id="assets-table">
+            <thead>
+            <tr>
+                <th>Id</th><th>Asset Type</th><th>Asset Manufacturer</th><th>Processor</th><th>Asset Owner</th>
+                <th>Location</th><th>Model</th><th>Service Tag</th><th>P/N</th><th>Last Owner</th>
+                <th>Warranty</th><th>Asset Health</th><th>Install date</th><th>O/S</th><th>Supt Vendor</th>
+                <th>Dept</th><th>HardDisk</th><th>RAM</th><th>Keyboard</th><th>Mouse</th>
+                <th>HeadPhone</th><th>USB Extender</th><th>Contains PII</th><th>Date Added/Updated</th>
+                <th>Free?</th><th>Actions</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
     <p id="status"></p>
 </section>
 
 <script>
 (() => {
-    const form = document.getElementById("asset-form");
     const statusEl = document.getElementById("status");
     const tbody = document.querySelector("#assets-table tbody");
     const showFreeOnly = document.getElementById("show-free-only");
@@ -86,9 +86,25 @@
         serviceTag: document.getElementById("serviceTag"),
         assetType: document.getElementById("assetType"),
         assetManufacturer: document.getElementById("assetManufacturer"),
-        model: document.getElementById("model"),
+        processor: document.getElementById("processor"),
         assetOwner: document.getElementById("assetOwner"),
         location: document.getElementById("location"),
+        model: document.getElementById("model"),
+        pn: document.getElementById("pn"),
+        lastOwner: document.getElementById("lastOwner"),
+        warranty: document.getElementById("warranty"),
+        assetHealth: document.getElementById("assetHealth"),
+        installDate: document.getElementById("installDate"),
+        os: document.getElementById("os"),
+        suptVendor: document.getElementById("suptVendor"),
+        dept: document.getElementById("dept"),
+        hardDisk: document.getElementById("hardDisk"),
+        ram: document.getElementById("ram"),
+        keyboard: document.getElementById("keyboard"),
+        mouse: document.getElementById("mouse"),
+        headPhone: document.getElementById("headPhone"),
+        usbExtender: document.getElementById("usbExtender"),
+        containsPII: document.getElementById("containsPII"),
         isAvailable: document.getElementById("isAvailable")
     };
 
@@ -97,44 +113,42 @@
         statusEl.className = isError ? "error" : "ok";
     }
 
+    function text(v) { return (v ?? "").toString().trim(); }
+
     function clearForm() {
-        controls.id.value = "";
-        controls.serviceTag.value = "";
-        controls.assetType.value = "Laptop";
-        controls.assetManufacturer.value = "";
-        controls.model.value = "";
-        controls.assetOwner.value = "";
-        controls.location.value = "";
-        controls.isAvailable.checked = true;
+        for (const k in controls) {
+            if (k === "isAvailable") controls[k].checked = true;
+            else if (k === "assetType") controls[k].value = "Laptop";
+            else controls[k].value = "";
+        }
         formTitle.textContent = "Create Asset";
     }
 
     function toPayload() {
-        const text = (v) => (v ?? "").toString().trim();
         return {
             id: controls.id.value ? Number(controls.id.value) : 0,
             assetType: text(controls.assetType.value),
             assetManufacturer: text(controls.assetManufacturer.value),
-            processor: "",
+            processor: text(controls.processor.value),
             assetOwner: text(controls.assetOwner.value),
             location: text(controls.location.value),
             model: text(controls.model.value),
             serviceTag: text(controls.serviceTag.value),
-            pn: "",
-            lastOwner: "",
-            warranty: "",
-            assetHealth: "",
-            installDate: null,
-            os: "",
-            suptVendor: "",
-            dept: "",
-            hardDisk: "",
-            ram: "",
-            keyboard: "",
-            mouse: "",
-            headPhone: "",
-            usbExtender: "",
-            containsPII: "",
+            pn: text(controls.pn.value),
+            lastOwner: text(controls.lastOwner.value),
+            warranty: text(controls.warranty.value),
+            assetHealth: text(controls.assetHealth.value),
+            installDate: controls.installDate.value ? new Date(controls.installDate.value).toISOString() : null,
+            os: text(controls.os.value),
+            suptVendor: text(controls.suptVendor.value),
+            dept: text(controls.dept.value),
+            hardDisk: text(controls.hardDisk.value),
+            ram: text(controls.ram.value),
+            keyboard: text(controls.keyboard.value),
+            mouse: text(controls.mouse.value),
+            headPhone: text(controls.headPhone.value),
+            usbExtender: text(controls.usbExtender.value),
+            containsPII: text(controls.containsPII.value),
             isAvailable: controls.isAvailable.checked
         };
     }
@@ -146,27 +160,26 @@
         return await res.json();
     }
 
+    function cell(v) { return v == null ? "" : String(v); }
+    function dt(v) { return v ? new Date(v).toLocaleString() : ""; }
+    function d(v) { return v ? new Date(v).toLocaleDateString() : ""; }
+
     function renderRows(rows) {
         tbody.innerHTML = "";
         if (!rows.length) {
-            tbody.innerHTML = "<tr><td colspan='8'>No assets found.</td></tr>";
+            tbody.innerHTML = "<tr><td colspan='26'>No assets found.</td></tr>";
             return;
         }
-
         for (const row of rows) {
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td>${row.id}</td>
-                <td>${row.serviceTag ?? ""}</td>
-                <td>${row.assetType ?? ""}</td>
-                <td>${row.model ?? ""}</td>
-                <td>${row.assetOwner ?? ""}</td>
-                <td>${row.location ?? ""}</td>
+                <td>${cell(row.id)}</td><td>${cell(row.assetType)}</td><td>${cell(row.assetManufacturer)}</td><td>${cell(row.processor)}</td><td>${cell(row.assetOwner)}</td>
+                <td>${cell(row.location)}</td><td>${cell(row.model)}</td><td>${cell(row.serviceTag)}</td><td>${cell(row.pn)}</td><td>${cell(row.lastOwner)}</td>
+                <td>${cell(row.warranty)}</td><td>${cell(row.assetHealth)}</td><td>${d(row.installDate)}</td><td>${cell(row.os)}</td><td>${cell(row.suptVendor)}</td>
+                <td>${cell(row.dept)}</td><td>${cell(row.hardDisk)}</td><td>${cell(row.ram)}</td><td>${cell(row.keyboard)}</td><td>${cell(row.mouse)}</td>
+                <td>${cell(row.headPhone)}</td><td>${cell(row.usbExtender)}</td><td>${cell(row.containsPII)}</td><td>${dt(row.dateAddedUpdated)}</td>
                 <td>${row.isAvailable ? "Yes" : "No"}</td>
-                <td>
-                    <button data-action="edit" data-id="${row.id}">Edit</button>
-                    <button data-action="delete" data-id="${row.id}" class="danger">Delete</button>
-                </td>
+                <td><button data-action="edit">Edit</button> <button data-action="delete" class="danger">Delete</button></td>
             `;
             tr.dataset.row = JSON.stringify(row);
             tbody.appendChild(tr);
@@ -184,26 +197,19 @@
         }
     }
 
-    form.addEventListener("submit", async (e) => {
+    document.getElementById("asset-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         try {
             const payload = toPayload();
-            if (!payload.serviceTag) {
-                setStatus("Service Tag is required.", true);
-                return;
-            }
+            if (!payload.serviceTag) return setStatus("Service Tag is required.", true);
             const isEdit = !!controls.id.value;
             const url = isEdit ? `/api/laptops/${controls.id.value}` : "/api/laptops";
             const method = isEdit ? "PUT" : "POST";
-            const res = await fetch(url, {
-                method,
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
+            const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
             if (!res.ok) throw new Error("Save failed");
-            setStatus(isEdit ? "Asset updated." : "Asset created.");
             clearForm();
             await reload();
+            setStatus(isEdit ? "Asset updated." : "Asset created.");
         } catch (err) {
             setStatus(err.message || "Save failed", true);
         }
@@ -213,7 +219,6 @@
         clearForm();
         setStatus("Edit cancelled.");
     });
-
     document.getElementById("reload-btn").addEventListener("click", reload);
     showFreeOnly.addEventListener("change", reload);
 
@@ -223,30 +228,41 @@
         const tr = btn.closest("tr");
         const row = JSON.parse(tr.dataset.row);
         const action = btn.dataset.action;
-
         if (action === "edit") {
-            controls.id.value = row.id;
+            controls.id.value = row.id ?? "";
             controls.serviceTag.value = row.serviceTag ?? "";
             controls.assetType.value = row.assetType ?? "";
             controls.assetManufacturer.value = row.assetManufacturer ?? "";
-            controls.model.value = row.model ?? "";
+            controls.processor.value = row.processor ?? "";
             controls.assetOwner.value = row.assetOwner ?? "";
             controls.location.value = row.location ?? "";
+            controls.model.value = row.model ?? "";
+            controls.pn.value = row.pn ?? "";
+            controls.lastOwner.value = row.lastOwner ?? "";
+            controls.warranty.value = row.warranty ?? "";
+            controls.assetHealth.value = row.assetHealth ?? "";
+            controls.installDate.value = row.installDate ? String(row.installDate).slice(0, 10) : "";
+            controls.os.value = row.os ?? "";
+            controls.suptVendor.value = row.suptVendor ?? "";
+            controls.dept.value = row.dept ?? "";
+            controls.hardDisk.value = row.hardDisk ?? "";
+            controls.ram.value = row.ram ?? "";
+            controls.keyboard.value = row.keyboard ?? "";
+            controls.mouse.value = row.mouse ?? "";
+            controls.headPhone.value = row.headPhone ?? "";
+            controls.usbExtender.value = row.usbExtender ?? "";
+            controls.containsPII.value = row.containsPII ?? "";
             controls.isAvailable.checked = !!row.isAvailable;
             formTitle.textContent = `Edit Asset #${row.id}`;
             window.scrollTo({ top: 0, behavior: "smooth" });
             return;
         }
-
         if (action === "delete") {
             if (!confirm(`Delete asset ${row.serviceTag || row.id}?`)) return;
             const res = await fetch(`/api/laptops/${row.id}`, { method: "DELETE" });
-            if (!res.ok) {
-                setStatus("Delete failed.", true);
-                return;
-            }
-            setStatus("Asset deleted.");
+            if (!res.ok) return setStatus("Delete failed.", true);
             await reload();
+            setStatus("Asset deleted.");
         }
     });
 

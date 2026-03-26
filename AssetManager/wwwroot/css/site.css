@@ -17,3 +17,4 @@ thead { background: #f9fafb; }
 #status { margin-top: 0.75rem; }
 .error { color: #b91c1c; }
 .ok { color: #166534; }
+.table-wrap { overflow-x: auto; }

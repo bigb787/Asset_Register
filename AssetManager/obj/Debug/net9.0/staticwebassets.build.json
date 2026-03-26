@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "r97EO7WQhNyxQeV3ttvGGuhujCBil24fOYgq7r+Mu4E=",
+  "Hash": "Jsy0+nMyhoJRA+89frK9iG6yet44916CpqsABmGCP70=",
   "Source": "AssetManager",
   "BasePath": "_content/AssetManager",
   "Mode": "Default",
@@ -17,12 +17,12 @@
   ],
   "Assets": [
     {
-      "Identity": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-o6r7s48k7i.gz",
+      "Identity": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-5v0z45wmno.gz",
       "SourceId": "AssetManager",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/AssetManager",
-      "RelativePath": "css/site#[.{fingerprint=o6r7s48k7i}]?.css.gz",
+      "RelativePath": "css/site#[.{fingerprint=5v0z45wmno}]?.css.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -31,8 +31,8 @@
       "RelatedAsset": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\css\\site.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "1pvvorg6l1",
-      "Integrity": "y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU=",
+      "Fingerprint": "3t61eifez1",
+      "Integrity": "SWHIyyUwMfbU7R4S17B7JSMMBsXawM+fZH6apw1xkZ8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\css\\site.css"
@@ -52,8 +52,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "o6r7s48k7i",
-      "Integrity": "YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA=",
+      "Fingerprint": "5v0z45wmno",
+      "Integrity": "ISf3AzMi17IAISwfh1v7vtvcLgswl5QiiLrsfV8RjEY=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -61,13 +61,13 @@
   ],
   "Endpoints": [
     {
-      "Route": "css/site.css",
-      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-o6r7s48k7i.gz",
+      "Route": "css/site.5v0z45wmno.css",
+      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-5v0z45wmno.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001712328767"
+          "Quality": "0.001655629139"
         }
       ],
       "ResponseHeaders": [
@@ -77,19 +77,19 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "583"
+          "Value": "603"
         },
         {
           "Name": "ETag",
-          "Value": "\"y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU=\""
+          "Value": "\"SWHIyyUwMfbU7R4S17B7JSMMBsXawM+fZH6apw1xkZ8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 26 Mar 2026 11:35:38 GMT"
+          "Value": "Thu, 26 Mar 2026 12:13:35 GMT"
         },
         {
           "Name": "Cache-Control",
-          "Value": "no-cache"
+          "Value": "max-age=31536000, immutable"
         },
         {
           "Name": "Content-Encoding",
@@ -105,18 +105,26 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA=\""
+          "Value": "W/\"ISf3AzMi17IAISwfh1v7vtvcLgswl5QiiLrsfV8RjEY=\""
         }
       ],
       "EndpointProperties": [
         {
+          "Name": "fingerprint",
+          "Value": "5v0z45wmno"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css"
+        },
+        {
           "Name": "integrity",
-          "Value": "sha256-YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA="
+          "Value": "sha256-ISf3AzMi17IAISwfh1v7vtvcLgswl5QiiLrsfV8RjEY="
         }
       ]
     },
     {
-      "Route": "css/site.css",
+      "Route": "css/site.5v0z45wmno.css",
       "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -126,7 +134,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1252"
+          "Value": "1287"
         },
         {
           "Name": "Content-Type",
@@ -134,121 +142,21 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA=\""
+          "Value": "\"ISf3AzMi17IAISwfh1v7vtvcLgswl5QiiLrsfV8RjEY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 26 Mar 2026 11:35:38 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.css.gz",
-      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-o6r7s48k7i.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "583"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 26 Mar 2026 11:35:38 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.o6r7s48k7i.css",
-      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-o6r7s48k7i.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.001712328767"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "583"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 26 Mar 2026 11:35:38 GMT"
+          "Value": "Thu, 26 Mar 2026 12:13:35 GMT"
         },
         {
           "Name": "Cache-Control",
           "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "o6r7s48k7i"
+          "Value": "5v0z45wmno"
         },
         {
           "Name": "label",
@@ -256,13 +164,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA="
+          "Value": "sha256-ISf3AzMi17IAISwfh1v7vtvcLgswl5QiiLrsfV8RjEY="
         }
       ]
     },
     {
-      "Route": "css/site.o6r7s48k7i.css",
-      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\css\\site.css",
+      "Route": "css/site.5v0z45wmno.css.gz",
+      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-5v0z45wmno.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -271,7 +179,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1252"
+          "Value": "603"
         },
         {
           "Name": "Content-Type",
@@ -279,56 +187,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA=\""
+          "Value": "\"SWHIyyUwMfbU7R4S17B7JSMMBsXawM+fZH6apw1xkZ8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 26 Mar 2026 11:35:38 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "o6r7s48k7i"
-        },
-        {
-          "Name": "label",
-          "Value": "css/site.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-YDEy39oHJGtpWzg+otXkts9xFfBXFBxI3HRnUrXUkhA="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.o6r7s48k7i.css.gz",
-      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-o6r7s48k7i.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "583"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 26 Mar 2026 11:35:38 GMT"
+          "Value": "Thu, 26 Mar 2026 12:13:35 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -346,7 +209,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "o6r7s48k7i"
+          "Value": "5v0z45wmno"
         },
         {
           "Name": "label",
@@ -354,7 +217,144 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-y2nzEehVYrHcqB2U7AtcZfkNucpQ/HLlvMkItud/YyU="
+          "Value": "sha256-SWHIyyUwMfbU7R4S17B7JSMMBsXawM+fZH6apw1xkZ8="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.css",
+      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-5v0z45wmno.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001655629139"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "603"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"SWHIyyUwMfbU7R4S17B7JSMMBsXawM+fZH6apw1xkZ8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Mar 2026 12:13:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"ISf3AzMi17IAISwfh1v7vtvcLgswl5QiiLrsfV8RjEY=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ISf3AzMi17IAISwfh1v7vtvcLgswl5QiiLrsfV8RjEY="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.css",
+      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\wwwroot\\css\\site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1287"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ISf3AzMi17IAISwfh1v7vtvcLgswl5QiiLrsfV8RjEY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Mar 2026 12:13:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ISf3AzMi17IAISwfh1v7vtvcLgswl5QiiLrsfV8RjEY="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.css.gz",
+      "AssetFile": "D:\\Kaushal_Backups\\Kaushal Docs\\newbackup\\latest\\Asset_Management_Register\\AssetManager\\obj\\Debug\\net9.0\\compressed\\mhquu2v00k-5v0z45wmno.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "603"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"SWHIyyUwMfbU7R4S17B7JSMMBsXawM+fZH6apw1xkZ8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 26 Mar 2026 12:13:35 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-SWHIyyUwMfbU7R4S17B7JSMMBsXawM+fZH6apw1xkZ8="
         }
       ]
     }
