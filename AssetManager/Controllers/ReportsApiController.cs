@@ -4,6 +4,7 @@ using AssetManager.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
+using System.Reflection;
 
 namespace AssetManager.Controllers;
 
@@ -18,7 +19,7 @@ public class ReportsApiController(
     [HttpGet("export/laptops.xlsx")]
     public async Task<IActionResult> ExportLaptopsExcel(CancellationToken ct)
     {
-        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        ConfigureEpplusLicense();
 
         var rows = await db.Laptops.AsNoTracking().OrderBy(x => x.ServiceTag).ToListAsync(ct);
 
@@ -126,5 +127,21 @@ public class ReportsApiController(
             logger.LogError(ex, "S3 upload failed; returning file inline.");
             return File(bytes, contentType, fileName);
         }
+    }
+
+    private static void ConfigureEpplusLicense()
+    {
+        var licenseProp = typeof(ExcelPackage).GetProperty("License", BindingFlags.Public | BindingFlags.Static);
+        var licenseObj = licenseProp?.GetValue(null);
+        var setNonCommercial = licenseObj?.GetType().GetMethod("SetNonCommercialPersonal", [typeof(string)])
+                               ?? licenseObj?.GetType().GetMethod("SetNonCommercialOrganization", [typeof(string)]);
+        if (setNonCommercial is not null)
+        {
+            setNonCommercial.Invoke(licenseObj, ["Asset Manager"]);
+            return;
+        }
+#pragma warning disable CS0618
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+#pragma warning restore CS0618
     }
 }

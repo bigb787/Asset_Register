@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Reflection;
 using AssetManager.Data;
 using AssetManager.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -94,7 +95,7 @@ public class RegistersApiController(ApplicationDbContext db) : ControllerBase
             .ToListAsync(ct);
         var rows = entities.Select(MapFromEntity).ToList();
 
-        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        ConfigureEpplusLicense();
         await using var ms = new MemoryStream();
         using (var package = new ExcelPackage())
         {
@@ -127,6 +128,22 @@ public class RegistersApiController(ApplicationDbContext db) : ControllerBase
             ? h
             : ["Asset", "Date Added/Updated"];
     private static bool IsDateHeader(string h) => h.Contains("Date Added", StringComparison.OrdinalIgnoreCase);
+
+    private static void ConfigureEpplusLicense()
+    {
+        var licenseProp = typeof(ExcelPackage).GetProperty("License", BindingFlags.Public | BindingFlags.Static);
+        var licenseObj = licenseProp?.GetValue(null);
+        var setNonCommercial = licenseObj?.GetType().GetMethod("SetNonCommercialPersonal", [typeof(string)])
+                               ?? licenseObj?.GetType().GetMethod("SetNonCommercialOrganization", [typeof(string)]);
+        if (setNonCommercial is not null)
+        {
+            setNonCommercial.Invoke(licenseObj, ["Asset Manager"]);
+            return;
+        }
+#pragma warning disable CS0618
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+#pragma warning restore CS0618
+    }
 
     private static string ResolveName(Dictionary<string, string> fields)
     {
