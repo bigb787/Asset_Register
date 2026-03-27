@@ -1,0 +1,241 @@
+@{
+    ViewData["Title"] = "Registers";
+}
+<h1>Asset Registers</h1>
+<p>Select a register and manage entries with the same pattern (Free? + Actions).</p>
+
+<section class="card">
+    <div class="grid">
+        <label>
+            Register
+            <select id="register"></select>
+        </label>
+        <label class="inline">
+            Show only free
+            <input type="checkbox" id="showFree" />
+        </label>
+    </div>
+</section>
+
+<section class="card">
+    <h2 id="formTitle">Create Entry</h2>
+    <form id="entryForm">
+        <input type="hidden" id="entryId" />
+        <div class="grid" id="dynamicFields"></div>
+        <div class="actions">
+            <label class="inline">Free (?) <input type="checkbox" id="isAvailable" checked /></label>
+            <button type="submit">Save</button>
+            <button type="button" id="cancelEdit" class="secondary">Cancel Edit</button>
+            <button type="button" id="deleteSelected" class="danger">Delete Selected</button>
+        </div>
+    </form>
+</section>
+
+<section class="card">
+    <div class="table-wrap">
+        <table id="grid">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <p id="status"></p>
+</section>
+
+<script>
+(() => {
+  const REGISTER_CONFIG = {
+    desktop: ["Asset type","Asset Manufacturer","Processor","Asset Owner","Dept","Location","Model","Service Tag","Warranty","Install date","O/S","Supt Vendor","Configuration","Contains PII (Yes/No)","Date Added/Updated"],
+    monitor: ["Asset type","User","Model","Warranty","INSTALL DATE","Supt Vendor","Location","Dept","Asset Owner","Contains PII (Yes/No)","Date Added/Updated"],
+    networking: ["Asset type","User","Model","S/N","Warranty","Supt Vendor","Location","Dept","Asset Owner","Contains PII (Yes/No)","Date Added/Updated"],
+    cloud: ["Asset","Asset Type","Asset Value","Asset Owner","Asset Location","Contains PII data?","Asset Region","Date Added/ Updated"],
+    infodesk: ["Asset","Asset Type","Asset Owner","Asset Location","Contains PII data?","Date Added/ Updated"],
+    thirdparty: ["Asset","Asset Type","Asset Value","Asset Owner","Asset Location","Contains PII data?","Date Added/ Updated"],
+    ups: ["Asset type","Device Id","Model","Warranty","INSTALL DATE","Supt Vendor","Location","Dept","Asset Owner","Date Added/Updated"],
+    mobile: ["Asset type","Model","Warranty","Supt Vendor","Location","Dept","Asset Owner","Contains PII (Yes/No)","Date Added/Updated"],
+    scanners: ["Asset type","Model","S/N","Warranty","Supt Vendor","Location","Dept","Asset Owner","Contains PII (Yes/No)","Date Added/Updated"],
+    admin: ["Asset type","Invoice No","Warranty","INSTALL DATE","Supt Vendor","Location","Dept","Asset Owner","Contains PII (Yes/No)","Date Added/Updated"]
+  };
+
+  const REGISTER_LABELS = {
+    desktop: "Desktop",
+    monitor: "Monitor",
+    networking: "Networking",
+    cloud: "Cloud Asset Register",
+    infodesk: "Infodesk Applications",
+    thirdparty: "Third Party Softwares",
+    ups: "UPS",
+    mobile: "Mobile Phones",
+    scanners: "Scanners and Others",
+    admin: "Admin"
+  };
+
+  const register = document.getElementById("register");
+  const dynamicFields = document.getElementById("dynamicFields");
+  const form = document.getElementById("entryForm");
+  const entryId = document.getElementById("entryId");
+  const isAvailable = document.getElementById("isAvailable");
+  const showFree = document.getElementById("showFree");
+  const formTitle = document.getElementById("formTitle");
+  const tableHead = document.querySelector("#grid thead");
+  const tableBody = document.querySelector("#grid tbody");
+  const status = document.getElementById("status");
+
+  for (const key of Object.keys(REGISTER_CONFIG)) {
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = REGISTER_LABELS[key];
+    register.appendChild(opt);
+  }
+
+  function setStatus(msg, err = false) { status.textContent = msg; status.className = err ? "error" : "ok"; }
+  function headersFor() { return REGISTER_CONFIG[register.value] || []; }
+  function editableHeaders() { return headersFor().filter(h => !/date added\/?\s*updated/i.test(h)); }
+
+  function renderFormFields() {
+    dynamicFields.innerHTML = "";
+    for (const h of editableHeaders()) {
+      const id = "f_" + h.toLowerCase().replace(/[^a-z0-9]+/g, "_");
+      const label = document.createElement("label");
+      label.innerHTML = `${h}<input id="${id}" />`;
+      if (/contains pii/i.test(h)) {
+        label.innerHTML = `${h}<select id="${id}"><option value="">--</option><option value="Yes">Yes</option><option value="No">No</option></select>`;
+      } else if (/install date/i.test(h)) {
+        label.innerHTML = `${h}<input id="${id}" type="date" />`;
+      }
+      dynamicFields.appendChild(label);
+    }
+  }
+
+  function renderTableHeader() {
+    const cols = headersFor();
+    tableHead.innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join("")}<th>Free (?)</th><th>Actions</th></tr>`;
+  }
+
+  function clearForm() {
+    entryId.value = "";
+    for (const h of editableHeaders()) {
+      const id = "f_" + h.toLowerCase().replace(/[^a-z0-9]+/g, "_");
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    }
+    isAvailable.checked = true;
+    formTitle.textContent = `Create ${REGISTER_LABELS[register.value]} Entry`;
+  }
+
+  function collectFields() {
+    const out = {};
+    for (const h of editableHeaders()) {
+      const id = "f_" + h.toLowerCase().replace(/[^a-z0-9]+/g, "_");
+      const el = document.getElementById(id);
+      out[h] = (el?.value || "").trim();
+    }
+    return out;
+  }
+
+  function fillForm(row) {
+    entryId.value = row.id;
+    for (const h of editableHeaders()) {
+      const id = "f_" + h.toLowerCase().replace(/[^a-z0-9]+/g, "_");
+      const el = document.getElementById(id);
+      if (!el) continue;
+      if (el.type === "date") {
+        const raw = row.fields[h] || "";
+        el.value = raw ? String(raw).slice(0, 10) : "";
+      } else {
+        el.value = row.fields[h] || "";
+      }
+    }
+    isAvailable.checked = !!row.isAvailable;
+    formTitle.textContent = `Edit ${REGISTER_LABELS[register.value]} #${row.id}`;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function renderRows(rows) {
+    const cols = headersFor();
+    const filtered = showFree.checked ? rows.filter(r => r.isAvailable) : rows;
+    if (!filtered.length) {
+      tableBody.innerHTML = `<tr><td colspan="${cols.length + 2}">No entries found.</td></tr>`;
+      return;
+    }
+    tableBody.innerHTML = filtered.map(r => {
+      const cells = cols.map(c => {
+        if (/date added\/?\s*updated/i.test(c)) return `<td>${new Date(r.dateAddedUpdated).toLocaleString()}</td>`;
+        return `<td>${(r.fields[c] ?? "").toString()}</td>`;
+      }).join("");
+      return `<tr data-row='${JSON.stringify(r).replace(/'/g, "&apos;")}'>${cells}<td>${r.isAvailable ? "Yes" : "No"}</td><td><button data-action="edit">Edit</button> <button data-action="delete" class="danger">Delete</button></td></tr>`;
+    }).join("");
+  }
+
+  async function loadRows() {
+    setStatus("Loading...");
+    try {
+      const res = await fetch(`/api/registers/${register.value}`);
+      if (!res.ok) throw new Error("Load failed");
+      const rows = await res.json();
+      renderRows(rows);
+      setStatus(`Loaded ${rows.length} entries.`);
+    } catch (e) {
+      setStatus(e.message || "Load failed", true);
+    }
+  }
+
+  register.addEventListener("change", () => {
+    renderFormFields();
+    renderTableHeader();
+    clearForm();
+    loadRows();
+  });
+
+  showFree.addEventListener("change", loadRows);
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const body = { fields: collectFields(), isAvailable: isAvailable.checked };
+    const id = entryId.value;
+    const method = id ? "PUT" : "POST";
+    const url = id ? `/api/registers/${register.value}/${id}` : `/api/registers/${register.value}`;
+    const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    if (!res.ok) return setStatus("Save failed", true);
+    clearForm();
+    await loadRows();
+    setStatus(id ? "Updated." : "Created.");
+  });
+
+  document.getElementById("cancelEdit").addEventListener("click", () => {
+    clearForm();
+    setStatus("Edit cancelled.");
+  });
+
+  document.getElementById("deleteSelected").addEventListener("click", async () => {
+    const id = entryId.value;
+    if (!id) return setStatus("Select a row first.", true);
+    if (!confirm(`Delete entry #${id}?`)) return;
+    const res = await fetch(`/api/registers/${register.value}/${id}`, { method: "DELETE" });
+    if (!res.ok) return setStatus("Delete failed", true);
+    clearForm();
+    await loadRows();
+    setStatus("Deleted.");
+  });
+
+  tableBody.addEventListener("click", async (e) => {
+    const btn = e.target.closest("button");
+    const tr = e.target.closest("tr");
+    if (!btn || !tr?.dataset?.row) return;
+    const row = JSON.parse(tr.dataset.row.replace(/&apos;/g, "'"));
+    if (btn.dataset.action === "delete") {
+      if (!confirm("Delete this entry?")) return;
+      const res = await fetch(`/api/registers/${register.value}/${row.id}`, { method: "DELETE" });
+      if (!res.ok) return setStatus("Delete failed", true);
+      await loadRows();
+      setStatus("Deleted.");
+      return;
+    }
+    fillForm(row);
+  });
+
+  renderFormFields();
+  renderTableHeader();
+  clearForm();
+  loadRows();
+})();
+</script>
