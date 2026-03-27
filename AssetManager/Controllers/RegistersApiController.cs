@@ -3,6 +3,7 @@ using AssetManager.Data;
 using AssetManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 
 namespace AssetManager.Controllers;
 
@@ -10,6 +11,21 @@ namespace AssetManager.Controllers;
 [Route("api/registers")]
 public class RegistersApiController(ApplicationDbContext db) : ControllerBase
 {
+    private static readonly Dictionary<string, string[]> HeaderConfig = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["laptop"] = ["Asset type","Asset Manufacturer","Service Tag","Model","P/N","Asset Owner","Assigned To","Asset Status","Last Owner","Dept","Location","Asset Health","Warranty","Install date","Date Added/Updated","Processor","RAM","HardDisk","O/S","Supt Vendor","Keyboard","Mouse","HeadPhone","USB Extender","Contains PII (Yes/No)"],
+        ["desktop"] = ["Asset type","Asset Manufacturer","Service Tag","Model","P/N","Asset Owner","Assigned To","Asset Status","Last Owner","Dept","Location","Asset Health","Warranty","Install date","Date Added/Updated","Processor","O/S","Supt Vendor","Configuration","Contains PII (Yes/No)"],
+        ["monitor"] = ["Asset type","Asset Manufacturer","Service Tag","Model","P/N","Asset Owner","Assigned To","Asset Status","Dept","Location","Asset Health","Warranty","INSTALL DATE","Date Added/Updated","Supt Vendor","Contains PII (Yes/No)"],
+        ["networking"] = ["Asset type","User","Model","S/N","Warranty","Supt Vendor","Location","Dept","Asset Owner","Contains PII (Yes/No)","Date Added/Updated"],
+        ["cloud"] = ["Asset","Asset Type","Asset Value","Asset Owner","Asset Location","Contains PII data?","Asset Region","Date Added/ Updated"],
+        ["infodesk"] = ["Asset","Asset Type","Asset Owner","Asset Location","Contains PII data?","Date Added/ Updated"],
+        ["thirdparty"] = ["Asset","Asset Type","Asset Value","Asset Owner","Asset Location","Contains PII data?","Date Added/ Updated"],
+        ["ups"] = ["Asset type","Device Id","Model","Warranty","INSTALL DATE","Supt Vendor","Location","Dept","Asset Owner","Date Added/Updated"],
+        ["mobile"] = ["Asset type","Model","Warranty","Supt Vendor","Location","Dept","Asset Owner","Contains PII (Yes/No)","Date Added/Updated"],
+        ["scanners"] = ["Asset type","Model","S/N","Warranty","Supt Vendor","Location","Dept","Asset Owner","Contains PII (Yes/No)","Date Added/Updated"],
+        ["admin"] = ["Asset type","Invoice No","Warranty","INSTALL DATE","Supt Vendor","Location","Dept","Asset Owner","Contains PII (Yes/No)","Date Added/Updated"]
+    };
+
     [HttpGet("{registerKey}")]
     public async Task<ActionResult<IEnumerable<RegisterRecordDto>>> GetAll(string registerKey, CancellationToken ct)
     {
@@ -67,7 +83,50 @@ public class RegistersApiController(ApplicationDbContext db) : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("{registerKey}/export.xlsx")]
+    public async Task<IActionResult> ExportExcel(string registerKey, CancellationToken ct)
+    {
+        var headers = ResolveHeaders(registerKey);
+        var category = Category(registerKey);
+        var entities = await db.FreeAssets.AsNoTracking()
+            .Where(x => x.Category == category)
+            .OrderByDescending(x => x.UpdatedAt)
+            .ToListAsync(ct);
+        var rows = entities.Select(MapFromEntity).ToList();
+
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        await using var ms = new MemoryStream();
+        using (var package = new ExcelPackage())
+        {
+            var sheet = package.Workbook.Worksheets.Add("Register");
+            for (var c = 0; c < headers.Length; c++) sheet.Cells[1, c + 1].Value = headers[c];
+            var r = 2;
+            foreach (var row in rows)
+            {
+                for (var c = 0; c < headers.Length; c++)
+                {
+                    var h = headers[c];
+                    object val;
+                    if (IsDateHeader(h))
+                        val = row.DateAddedUpdated;
+                    else
+                        val = row.Fields.TryGetValue(h, out var v) ? v : "";
+                    sheet.Cells[r, c + 1].Value = val;
+                }
+                r++;
+            }
+            await package.SaveAsAsync(ms, ct);
+        }
+        var fileName = $"{registerKey}-register-{DateTime.UtcNow:yyyyMMddHHmmss}.xlsx";
+        return File(ms.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+    }
+
     private static string Category(string key) => $"register:{key.Trim().ToLowerInvariant()}";
+    private static string[] ResolveHeaders(string registerKey) =>
+        HeaderConfig.TryGetValue(registerKey.Trim().ToLowerInvariant(), out var h)
+            ? h
+            : ["Asset", "Date Added/Updated"];
+    private static bool IsDateHeader(string h) => h.Contains("Date Added", StringComparison.OrdinalIgnoreCase);
 
     private static string ResolveName(Dictionary<string, string> fields)
     {

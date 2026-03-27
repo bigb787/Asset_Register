@@ -27,6 +27,7 @@
             <button type="submit">Save</button>
             <button type="button" id="cancelEdit" class="secondary">Cancel Edit</button>
             <button type="button" id="deleteSelected" class="danger">Delete Selected</button>
+            <button type="button" id="exportExcel" class="secondary">Export Excel</button>
         </div>
     </form>
 </section>
@@ -217,6 +218,10 @@
     clearForm();
     await loadRows();
     setStatus("Deleted.");
+  });
+
+  document.getElementById("exportExcel").addEventListener("click", () => {
+    window.open(`/api/registers/${register.value}/export.xlsx`, "_blank");
   });
 
   tableBody.addEventListener("click", (e) => {
