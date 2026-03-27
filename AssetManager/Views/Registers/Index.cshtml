@@ -21,9 +21,9 @@
     <h2 id="formTitle">Create Entry</h2>
     <form id="entryForm">
         <input type="hidden" id="entryId" />
+        <input type="hidden" id="isAvailable" value="true" />
         <div class="grid" id="dynamicFields"></div>
         <div class="actions">
-            <label class="inline">Free (?) <input type="checkbox" id="isAvailable" checked /></label>
             <button type="submit">Save</button>
             <button type="button" id="cancelEdit" class="secondary">Cancel Edit</button>
             <button type="button" id="deleteSelected" class="danger">Delete Selected</button>
@@ -120,7 +120,7 @@
       const el = document.getElementById(id);
       if (el) el.value = "";
     }
-    isAvailable.checked = true;
+    isAvailable.value = "true";
     formTitle.textContent = `Create ${REGISTER_LABELS[register.value]} Entry`;
   }
 
@@ -147,7 +147,7 @@
         el.value = row.fields[h] || "";
       }
     }
-    isAvailable.checked = !!row.isAvailable;
+    isAvailable.value = row.isAvailable ? "true" : "false";
     formTitle.textContent = `Edit ${REGISTER_LABELS[register.value]} #${row.id}`;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -192,7 +192,7 @@
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const body = { fields: collectFields(), isAvailable: isAvailable.checked };
+    const body = { fields: collectFields(), isAvailable: String(isAvailable.value).toLowerCase() === "true" };
     const id = entryId.value;
     const method = id ? "PUT" : "POST";
     const url = id ? `/api/registers/${register.value}/${id}` : `/api/registers/${register.value}`;
@@ -219,19 +219,10 @@
     setStatus("Deleted.");
   });
 
-  tableBody.addEventListener("click", async (e) => {
-    const btn = e.target.closest("button");
+  tableBody.addEventListener("click", (e) => {
     const tr = e.target.closest("tr");
-    if (!btn || !tr?.dataset?.row) return;
+    if (!tr?.dataset?.row) return;
     const row = JSON.parse(tr.dataset.row.replace(/&apos;/g, "'"));
-    if (btn.dataset.action === "delete") {
-      if (!confirm("Delete this entry?")) return;
-      const res = await fetch(`/api/registers/${register.value}/${row.id}`, { method: "DELETE" });
-      if (!res.ok) return setStatus("Delete failed", true);
-      await loadRows();
-      setStatus("Deleted.");
-      return;
-    }
     fillForm(row);
   });
 
