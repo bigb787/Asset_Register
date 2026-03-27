@@ -2,30 +2,33 @@
     ViewData["Title"] = "Home";
 }
 <h1>Asset Manager</h1>
-<p>Simple UI for create / update / delete laptops with your full header set.</p>
+<p>Laptop table aligned to your latest header format.</p>
 
 <section class="card">
     <h2 id="form-title">Create Asset</h2>
     <form id="asset-form">
         <input type="hidden" id="asset-id" />
         <div class="grid">
-            <label>Service Tag<input id="serviceTag" required /></label>
-            <label>Asset Type<input id="assetType" value="Laptop" /></label>
+            <label>Asset type<input id="assetType" value="Laptop" /></label>
             <label>Asset Manufacturer<input id="assetManufacturer" /></label>
-            <label>Processor<input id="processor" /></label>
-            <label>Asset Owner<input id="assetOwner" /></label>
-            <label>Location<input id="location" /></label>
+            <label>Service Tag<input id="serviceTag" required /></label>
             <label>Model<input id="model" /></label>
             <label>P/N<input id="pn" /></label>
+            <label>Asset Owner<input id="assetOwner" /></label>
+            <label>Assigned To<input id="assignedTo" /></label>
+            <label>Asset Status<input id="assetStatus" /></label>
             <label>Last Owner<input id="lastOwner" /></label>
-            <label>Warranty<input id="warranty" /></label>
+            <label>Dept<input id="dept" /></label>
+            <label>Location<input id="location" /></label>
             <label>Asset Health<input id="assetHealth" /></label>
-            <label>Install Date<input id="installDate" type="date" /></label>
+            <label>Warranty<input id="warranty" /></label>
+            <label>Install date<input id="installDate" type="date" /></label>
+            <label>Date Added/Updated<input id="dateAddedUpdated" readonly /></label>
+            <label>Processor<input id="processor" /></label>
+            <label>RAM<input id="ram" /></label>
+            <label>HardDisk<input id="hardDisk" /></label>
             <label>O/S<input id="os" /></label>
             <label>Supt Vendor<input id="suptVendor" /></label>
-            <label>Dept<input id="dept" /></label>
-            <label>HardDisk<input id="hardDisk" /></label>
-            <label>RAM<input id="ram" /></label>
             <label>Keyboard<input id="keyboard" /></label>
             <label>Mouse<input id="mouse" /></label>
             <label>HeadPhone<input id="headPhone" /></label>
@@ -37,7 +40,7 @@
                     <option value="No">No</option>
                 </select>
             </label>
-            <label class="inline">Is Available <input id="isAvailable" type="checkbox" checked /></label>
+            <label class="inline">Free (?) <input id="isAvailable" type="checkbox" checked /></label>
         </div>
         <div class="actions">
             <button type="submit">Save</button>
@@ -51,22 +54,20 @@
 <section class="card">
     <div class="toolbar">
         <h2>Assets</h2>
-        <label class="inline">
-            <input id="show-free-only" type="checkbox" />
-            Show only free assets
-        </label>
+        <label class="inline"><input id="show-free-only" type="checkbox" /> Show only free assets</label>
         <button type="button" id="reload-btn">Reload</button>
     </div>
     <div class="table-wrap">
         <table id="assets-table">
             <thead>
-            <tr>
-                <th>Asset Type</th><th>Asset Manufacturer</th><th>Processor</th><th>Asset Owner</th><th>Location</th>
-                <th>Model</th><th>Service Tag</th><th>P/N</th><th>Last Owner</th><th>Warranty</th>
-                <th>Asset Health</th><th>Install date</th><th>O/S</th><th>Supt Vendor</th><th>Dept</th>
-                <th>HardDisk</th><th>RAM</th><th>Keyboard</th><th>Mouse</th><th>HeadPhone</th>
-                <th>USB Extender</th><th>Contains PII (Yes/No)</th><th>Date Added/Updated</th><th>Free?</th><th>Actions</th>
-            </tr>
+                <tr>
+                    <th>Asset type</th><th>Asset Manufacturer</th><th>Service Tag</th><th>Model</th><th>P/N</th>
+                    <th>Asset Owner</th><th>Assigned To</th><th>Asset Status</th><th>Last Owner</th><th>Dept</th>
+                    <th>Location</th><th>Asset Health</th><th>Warranty</th><th>Install date</th><th>Date Added/Updated</th>
+                    <th>Processor</th><th>RAM</th><th>HardDisk</th><th>O/S</th><th>Supt Vendor</th>
+                    <th>Keyboard</th><th>Mouse</th><th>HeadPhone</th><th>USB Extender</th><th>Contains PII (Yes/No)</th>
+                    <th>Free?</th><th>Actions</th>
+                </tr>
             </thead>
             <tbody></tbody>
         </table>
@@ -78,28 +79,31 @@
 (() => {
     const statusEl = document.getElementById("status");
     const tbody = document.querySelector("#assets-table tbody");
-    const showFreeOnly = document.getElementById("show-free-only");
     const formTitle = document.getElementById("form-title");
+    const showFreeOnly = document.getElementById("show-free-only");
 
     const controls = {
         id: document.getElementById("asset-id"),
-        serviceTag: document.getElementById("serviceTag"),
         assetType: document.getElementById("assetType"),
         assetManufacturer: document.getElementById("assetManufacturer"),
-        processor: document.getElementById("processor"),
-        assetOwner: document.getElementById("assetOwner"),
-        location: document.getElementById("location"),
+        serviceTag: document.getElementById("serviceTag"),
         model: document.getElementById("model"),
         pn: document.getElementById("pn"),
+        assetOwner: document.getElementById("assetOwner"),
+        assignedTo: document.getElementById("assignedTo"),
+        assetStatus: document.getElementById("assetStatus"),
         lastOwner: document.getElementById("lastOwner"),
-        warranty: document.getElementById("warranty"),
+        dept: document.getElementById("dept"),
+        location: document.getElementById("location"),
         assetHealth: document.getElementById("assetHealth"),
+        warranty: document.getElementById("warranty"),
         installDate: document.getElementById("installDate"),
+        dateAddedUpdated: document.getElementById("dateAddedUpdated"),
+        processor: document.getElementById("processor"),
+        ram: document.getElementById("ram"),
+        hardDisk: document.getElementById("hardDisk"),
         os: document.getElementById("os"),
         suptVendor: document.getElementById("suptVendor"),
-        dept: document.getElementById("dept"),
-        hardDisk: document.getElementById("hardDisk"),
-        ram: document.getElementById("ram"),
         keyboard: document.getElementById("keyboard"),
         mouse: document.getElementById("mouse"),
         headPhone: document.getElementById("headPhone"),
@@ -108,19 +112,21 @@
         isAvailable: document.getElementById("isAvailable")
     };
 
-    function setStatus(text, isError = false) {
-        statusEl.textContent = text;
-        statusEl.className = isError ? "error" : "ok";
+    const text = (v) => (v ?? "").toString().trim();
+    const d = (v) => v ? new Date(v).toLocaleDateString() : "";
+    const dt = (v) => v ? new Date(v).toLocaleString() : "";
+    const cell = (v) => v == null ? "" : String(v);
+    const statusFrom = (row) => row.isAvailable ? "Free" : (row.assetHealth || "In Use");
+
+    function setStatus(msg, err = false) {
+        statusEl.textContent = msg;
+        statusEl.className = err ? "error" : "ok";
     }
 
-    function text(v) { return (v ?? "").toString().trim(); }
-
     function clearForm() {
-        for (const k in controls) {
-            if (k === "isAvailable") controls[k].checked = true;
-            else if (k === "assetType") controls[k].value = "Laptop";
-            else controls[k].value = "";
-        }
+        Object.values(controls).forEach(el => { if ("value" in el) el.value = ""; });
+        controls.assetType.value = "Laptop";
+        controls.isAvailable.checked = true;
         formTitle.textContent = "Create Asset";
     }
 
@@ -129,21 +135,22 @@
             id: controls.id.value ? Number(controls.id.value) : 0,
             assetType: text(controls.assetType.value),
             assetManufacturer: text(controls.assetManufacturer.value),
-            processor: text(controls.processor.value),
-            assetOwner: text(controls.assetOwner.value),
-            location: text(controls.location.value),
-            model: text(controls.model.value),
             serviceTag: text(controls.serviceTag.value),
+            model: text(controls.model.value),
             pn: text(controls.pn.value),
+            assetOwner: text(controls.assetOwner.value),
+            // Assigned To not in DB schema yet; keeping it as UI-only for now.
             lastOwner: text(controls.lastOwner.value),
-            warranty: text(controls.warranty.value),
+            dept: text(controls.dept.value),
+            location: text(controls.location.value),
             assetHealth: text(controls.assetHealth.value),
+            warranty: text(controls.warranty.value),
             installDate: controls.installDate.value ? new Date(controls.installDate.value).toISOString() : null,
+            processor: text(controls.processor.value),
+            ram: text(controls.ram.value),
+            hardDisk: text(controls.hardDisk.value),
             os: text(controls.os.value),
             suptVendor: text(controls.suptVendor.value),
-            dept: text(controls.dept.value),
-            hardDisk: text(controls.hardDisk.value),
-            ram: text(controls.ram.value),
             keyboard: text(controls.keyboard.value),
             mouse: text(controls.mouse.value),
             headPhone: text(controls.headPhone.value),
@@ -160,31 +167,26 @@
         return await res.json();
     }
 
-    function cell(v) { return v == null ? "" : String(v); }
-    function dt(v) { return v ? new Date(v).toLocaleString() : ""; }
-    function d(v) { return v ? new Date(v).toLocaleDateString() : ""; }
-
     function renderRows(rows) {
         tbody.innerHTML = "";
         if (!rows.length) {
-            tbody.innerHTML = "<tr><td colspan='25'>No assets found.</td></tr>";
+            tbody.innerHTML = "<tr><td colspan='27'>No assets found.</td></tr>";
             return;
         }
-        for (const row of rows) {
+        rows.forEach(row => {
             const tr = document.createElement("tr");
+            tr.dataset.row = JSON.stringify(row);
             tr.innerHTML = `
-                <td>${cell(row.assetType)}</td><td>${cell(row.assetManufacturer)}</td><td>${cell(row.processor)}</td><td>${cell(row.assetOwner)}</td><td>${cell(row.location)}</td>
-                <td>${cell(row.model)}</td><td>${cell(row.serviceTag)}</td><td>${cell(row.pn)}</td><td>${cell(row.lastOwner)}</td>
-                <td>${cell(row.warranty)}</td><td>${cell(row.assetHealth)}</td><td>${d(row.installDate)}</td><td>${cell(row.os)}</td><td>${cell(row.suptVendor)}</td>
-                <td>${cell(row.dept)}</td><td>${cell(row.hardDisk)}</td><td>${cell(row.ram)}</td><td>${cell(row.keyboard)}</td><td>${cell(row.mouse)}</td>
-                <td>${cell(row.headPhone)}</td><td>${cell(row.usbExtender)}</td><td>${cell(row.containsPII)}</td><td>${dt(row.dateAddedUpdated)}</td>
+                <td>${cell(row.assetType)}</td><td>${cell(row.assetManufacturer)}</td><td>${cell(row.serviceTag)}</td><td>${cell(row.model)}</td><td>${cell(row.pn)}</td>
+                <td>${cell(row.assetOwner)}</td><td>${cell(row.assetOwner)}</td><td>${cell(statusFrom(row))}</td><td>${cell(row.lastOwner)}</td><td>${cell(row.dept)}</td>
+                <td>${cell(row.location)}</td><td>${cell(row.assetHealth)}</td><td>${cell(row.warranty)}</td><td>${d(row.installDate)}</td><td>${dt(row.dateAddedUpdated)}</td>
+                <td>${cell(row.processor)}</td><td>${cell(row.ram)}</td><td>${cell(row.hardDisk)}</td><td>${cell(row.os)}</td><td>${cell(row.suptVendor)}</td>
+                <td>${cell(row.keyboard)}</td><td>${cell(row.mouse)}</td><td>${cell(row.headPhone)}</td><td>${cell(row.usbExtender)}</td><td>${cell(row.containsPII)}</td>
                 <td>${row.isAvailable ? "Yes" : "No"}</td>
                 <td><button data-action="edit">Edit</button> <button data-action="delete" class="danger">Delete</button></td>
             `;
-            tr.dataset.row = JSON.stringify(row);
-            tr.className = "selectable-row";
             tbody.appendChild(tr);
-        }
+        });
     }
 
     async function reload() {
@@ -193,51 +195,38 @@
             const rows = await fetchAssets();
             renderRows(rows);
             setStatus(`Loaded ${rows.length} assets.`);
-        } catch (err) {
-            setStatus(err.message || "Load failed", true);
+        } catch (e) {
+            setStatus(e.message || "Load failed", true);
         }
     }
 
     document.getElementById("asset-form").addEventListener("submit", async (e) => {
         e.preventDefault();
-        try {
-            const payload = toPayload();
-            if (!payload.serviceTag) return setStatus("Service Tag is required.", true);
-            const isEdit = !!controls.id.value;
-            const url = isEdit ? `/api/laptops/${controls.id.value}` : "/api/laptops";
-            const method = isEdit ? "PUT" : "POST";
-            const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-            if (!res.ok) throw new Error("Save failed");
-            clearForm();
-            await reload();
-            setStatus(isEdit ? "Asset updated." : "Asset created.");
-        } catch (err) {
-            setStatus(err.message || "Save failed", true);
-        }
+        if (!text(controls.serviceTag.value)) return setStatus("Service Tag is required.", true);
+        const isEdit = !!controls.id.value;
+        const url = isEdit ? `/api/laptops/${controls.id.value}` : "/api/laptops";
+        const method = isEdit ? "PUT" : "POST";
+        const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(toPayload()) });
+        if (!res.ok) return setStatus("Save failed.", true);
+        clearForm();
+        await reload();
+        setStatus(isEdit ? "Asset updated." : "Asset created.");
     });
 
-    document.getElementById("cancel-edit").addEventListener("click", () => {
-        clearForm();
-        setStatus("Edit cancelled.");
-    });
+    document.getElementById("cancel-edit").addEventListener("click", () => { clearForm(); setStatus("Edit cancelled."); });
+    document.getElementById("reload-btn").addEventListener("click", reload);
+    showFreeOnly.addEventListener("change", reload);
+
     document.getElementById("delete-selected").addEventListener("click", async () => {
         const id = controls.id.value;
-        if (!id) {
-            setStatus("Select a row first to delete.", true);
-            return;
-        }
+        if (!id) return setStatus("Select a row first to delete.", true);
         if (!confirm(`Delete asset #${id}?`)) return;
         const res = await fetch(`/api/laptops/${id}`, { method: "DELETE" });
-        if (!res.ok) {
-            setStatus("Delete failed.", true);
-            return;
-        }
+        if (!res.ok) return setStatus("Delete failed.", true);
         clearForm();
         await reload();
         setStatus("Asset deleted.");
     });
-    document.getElementById("reload-btn").addEventListener("click", reload);
-    showFreeOnly.addEventListener("change", reload);
 
     tbody.addEventListener("click", async (e) => {
         const tr = e.target.closest("tr");
@@ -253,23 +242,26 @@
             return;
         }
         controls.id.value = row.id ?? "";
-        controls.serviceTag.value = row.serviceTag ?? "";
         controls.assetType.value = row.assetType ?? "";
         controls.assetManufacturer.value = row.assetManufacturer ?? "";
-        controls.processor.value = row.processor ?? "";
-        controls.assetOwner.value = row.assetOwner ?? "";
-        controls.location.value = row.location ?? "";
+        controls.serviceTag.value = row.serviceTag ?? "";
         controls.model.value = row.model ?? "";
         controls.pn.value = row.pn ?? "";
+        controls.assetOwner.value = row.assetOwner ?? "";
+        controls.assignedTo.value = row.assetOwner ?? "";
+        controls.assetStatus.value = statusFrom(row);
         controls.lastOwner.value = row.lastOwner ?? "";
-        controls.warranty.value = row.warranty ?? "";
+        controls.dept.value = row.dept ?? "";
+        controls.location.value = row.location ?? "";
         controls.assetHealth.value = row.assetHealth ?? "";
+        controls.warranty.value = row.warranty ?? "";
         controls.installDate.value = row.installDate ? String(row.installDate).slice(0, 10) : "";
+        controls.dateAddedUpdated.value = dt(row.dateAddedUpdated);
+        controls.processor.value = row.processor ?? "";
+        controls.ram.value = row.ram ?? "";
+        controls.hardDisk.value = row.hardDisk ?? "";
         controls.os.value = row.os ?? "";
         controls.suptVendor.value = row.suptVendor ?? "";
-        controls.dept.value = row.dept ?? "";
-        controls.hardDisk.value = row.hardDisk ?? "";
-        controls.ram.value = row.ram ?? "";
         controls.keyboard.value = row.keyboard ?? "";
         controls.mouse.value = row.mouse ?? "";
         controls.headPhone.value = row.headPhone ?? "";
